@@ -13,9 +13,9 @@ public class UserService {
 	private UserDao userDao;
 
 	/*** 유저 정보 조회(Login) ***/
-	public UserVo getUser(UserVo userVo) {
+	public UserVo getUserLogin(UserVo userVo) {
 
-		return userDao.selectUser(userVo);
+		return userDao.getUserLogin(userVo);
 	}
 
 	/*** 회원가입 ***/
@@ -28,6 +28,12 @@ public class UserService {
 	public void modify(UserVo userVo) {
 
 		userDao.modify(userVo);
+	}
+
+	/*** 유저 정보 조회(Modify) ***/
+	public UserVo getUserModify(UserVo userVo) {
+
+		return userDao.getUserModify(userVo);
 	}
 
 }

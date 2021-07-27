@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -38,7 +37,7 @@ public class UserController {
 	public String login(@ModelAttribute UserVo userVo, HttpSession session) {
 		System.out.println("[현재 위치: UserController.login]");
 
-		UserVo authUser = userService.getUser(userVo);
+		UserVo authUser = userService.getUserLogin(userVo);
 
 		if (authUser != null) { // 로그인 성공(authUser 있을 때)
 			System.out.println("[" + authUser.getName() + "] 님이 로그인 하셨습니다.");
@@ -73,12 +72,13 @@ public class UserController {
 
 	/*** 회원수정 폼 ***/
 	@RequestMapping(value = "/user/modifyForm/{no}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String modifyForm(@PathVariable("no") int no, Model model, HttpSession session) {
+	public String modifyForm(Model model, HttpSession session) {
 
-		UserVo userVo = (UserVo) session.getAttribute("authUser");
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
 
-		if (userVo != null) {
-			model.addAttribute("no", no);
+		if (authUser != null) {
+			UserVo userVo = userService.getUserModify(authUser);
+			model.addAttribute("userVo", userVo);
 
 			return "user/modifyForm";
 		} else {
