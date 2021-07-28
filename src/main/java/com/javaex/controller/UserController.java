@@ -109,10 +109,12 @@ public class UserController {
 	@RequestMapping(value = "/user/logout", method = { RequestMethod.GET, RequestMethod.POST })
 	public String logout(HttpSession session) {
 
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+
 		session.removeAttribute("authUser");
 		session.invalidate();
 
-		System.out.println("[");
+		System.out.println("[" + authUser.getName() + "] 님이 로그아웃 하셨습니다.");
 
 		return "redirect:/main";
 	}
