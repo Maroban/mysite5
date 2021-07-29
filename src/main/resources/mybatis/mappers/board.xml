@@ -78,7 +78,7 @@
 				WHERE
 				    ( bu.name
 				      || bu.title
-				      || bu.content ) LIKE '%' || #{keyword,jdbcType=VARCHAR} || '%'
+				      || bu.content ) LIKE '%' || #{keyword} || '%'
 				ORDER BY
 				    rn DESC
 			]]>
