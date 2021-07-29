@@ -41,7 +41,7 @@ public class BoardDao {
 
 	/*** 게시판 리스트(검색) ***/
 	public List<BoardVo> selectList(String keyword) {
-		System.out.println("[사용 메소드: BoardDao.selectList(Keyword)]");
+		System.out.println("[사용 메소드: BoardDao.selectList(" + keyword + ")]");
 
 		Map<String, Object> keywordMap = new HashMap<String, Object>();
 		keywordMap.put("keyword", keyword);

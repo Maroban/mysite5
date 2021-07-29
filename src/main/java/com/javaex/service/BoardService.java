@@ -31,6 +31,13 @@ public class BoardService {
 		return boardDao.selectBoard(no);
 	}
 
+	/*** 게시판 1명 정보 ***/
+	public BoardVo getOneBoard(int no) {
+
+		// 게시판 정보 가져오기
+		return boardDao.selectBoard(no);
+	}
+
 	/*** 게시판 리스트(검색) ***/
 	public List<BoardVo> selectList(String keyword) {
 

@@ -18,6 +18,7 @@ import com.javaex.vo.BoardVo;
 import com.javaex.vo.UserVo;
 
 @Controller
+@RequestMapping(value = "/board")
 public class BoardController {
 
 	// 필드
@@ -31,7 +32,7 @@ public class BoardController {
 	// 메소드 - 일반
 
 	/*** 글 읽기 ***/
-	@RequestMapping(value = "/board/read/{no}", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/read/{no}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String read(@PathVariable("no") int no, Model model) {
 		System.out.println("[현재 위치: BoardController.read]");
 
@@ -42,8 +43,8 @@ public class BoardController {
 	}
 
 	/*** 게시판 리스트 ***/
-	@RequestMapping(value = "/board/list", method = { RequestMethod.GET, RequestMethod.POST })
-	public String list(Model model, @RequestParam(required = false, defaultValue="") String keyword) {
+	@RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
+	public String list(Model model, @RequestParam(required = false, defaultValue = "") String keyword) {
 		System.out.println("[현재 위치: BoardController.list]");
 
 		List<BoardVo> bList = boardService.selectList(keyword);
@@ -52,8 +53,8 @@ public class BoardController {
 		return "board/list";
 	}
 
-	/*** 게시글 폼 ***/
-	@RequestMapping(value = "/board/writeForm", method = { RequestMethod.GET, RequestMethod.POST })
+	/*** 게시글 작성 폼 ***/
+	@RequestMapping(value = "/writeForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String writeForm() {
 		System.out.println("[현재 위치: BoardController.writeForm]");
 
@@ -61,7 +62,7 @@ public class BoardController {
 	}
 
 	/*** 게시글 작성 ***/
-	@RequestMapping(value = "/board/write", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/write", method = { RequestMethod.GET, RequestMethod.POST })
 	public String write(@ModelAttribute BoardVo boardVo) {
 		System.out.println("[현재 위치: BoardController.write]");
 
@@ -71,25 +72,31 @@ public class BoardController {
 	}
 
 	/*** 게시글 수정 폼 ***/
-	@RequestMapping(value = "/board/modifyForm/{no}", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/modifyForm/{no}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String modifyForm(@PathVariable("no") int no, Model model, HttpSession session) {
 
 		UserVo authUser = ((UserVo) session.getAttribute("authUser"));
-		BoardVo boardVo = boardService.getBoard(no);
+		BoardVo boardVo = boardService.getOneBoard(no);
 
-		if (authUser.getNo() == boardVo.getUser_no()) {
-			model.addAttribute("boardVo", boardVo);
-
-			return "board/modifyForm";
-
+		if (authUser == null) {
+			return "redirect:/main";
 		} else {
-			return "redirect:/board/list";
 
+			if (authUser.getNo() == boardVo.getUser_no()) {
+				model.addAttribute("boardVo", boardVo);
+
+				return "board/modifyForm";
+
+			} else {
+				return "redirect:/board/list";
+
+			}
 		}
+
 	}
 
 	/*** 게시글 수정 ***/
-	@RequestMapping(value = "/board/modify", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/modify", method = { RequestMethod.GET, RequestMethod.POST })
 	public String modify(@ModelAttribute BoardVo boardVo) {
 
 		boardService.modify(boardVo);
@@ -98,12 +105,23 @@ public class BoardController {
 	}
 
 	/*** 게시글 삭제 ***/
-	@RequestMapping(value = "/board/delete/{no}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String delete(@PathVariable("no") int no) {
+	@RequestMapping(value = "/delete/{no}", method = { RequestMethod.GET, RequestMethod.POST })
+	public String delete(@PathVariable("no") int no, HttpSession session) {
 
-		boardService.delete(no);
+		UserVo authUser = ((UserVo) session.getAttribute("authUser"));
+		BoardVo boardVo = boardService.getOneBoard(no);
 
-		return "redirect:/board/list";
+		if (authUser == null) {
+			return "redirect:/main";
+		} else {
+
+			if (authUser.getNo() == boardVo.getUser_no()) {
+				boardService.delete(no);
+
+			}
+			return "redirect:/board/list";
+
+		}
 
 	}
 
