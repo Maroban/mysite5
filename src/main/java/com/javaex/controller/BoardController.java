@@ -43,7 +43,7 @@ public class BoardController {
 
 	/*** 게시판 리스트 ***/
 	@RequestMapping(value = "/board/list", method = { RequestMethod.GET, RequestMethod.POST })
-	public String list(Model model, @RequestParam(required = false) String keyword) {
+	public String list(Model model, @RequestParam(required = false, defaultValue="") String keyword) {
 		System.out.println("[현재 위치: BoardController.list]");
 
 		List<BoardVo> bList = boardService.selectList(keyword);
