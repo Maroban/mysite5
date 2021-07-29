@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.javaex.dao.BoardDao;
 import com.javaex.vo.BoardVo;
 
@@ -28,12 +29,6 @@ public class BoardService {
 
 		// 게시판 정보 가져오기
 		return boardDao.selectBoard(no);
-	}
-
-	/*** 게시판 리스트 ***/
-	public List<BoardVo> selectList() {
-
-		return boardDao.selectList();
 	}
 
 	/*** 게시판 리스트(검색) ***/

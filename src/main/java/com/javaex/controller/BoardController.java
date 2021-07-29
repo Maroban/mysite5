@@ -43,19 +43,10 @@ public class BoardController {
 
 	/*** 게시판 리스트 ***/
 	@RequestMapping(value = "/board/list", method = { RequestMethod.GET, RequestMethod.POST })
-	public String list(Model model, @RequestParam(value = "keyword", defaultValue = "검색어 없음") String keyword) {
+	public String list(Model model, @RequestParam(required = false) String keyword) {
 		System.out.println("[현재 위치: BoardController.list]");
 
-		List<BoardVo> bList = null;
-
-		if (keyword.equals("검색어 없음")) {
-			bList = boardService.selectList();
-			model.addAttribute("bList", bList);
-
-		} else {
-			bList = boardService.selectList(keyword);
-		}
-
+		List<BoardVo> bList = boardService.selectList(keyword);
 		model.addAttribute("bList", bList);
 
 		return "board/list";
@@ -95,7 +86,6 @@ public class BoardController {
 			return "redirect:/board/list";
 
 		}
-
 	}
 
 	/*** 게시글 수정 ***/
@@ -110,9 +100,6 @@ public class BoardController {
 	/*** 게시글 삭제 ***/
 	@RequestMapping(value = "/board/delete/{no}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String delete(@PathVariable("no") int no, HttpSession session) {
-
-		UserVo authUser = ((UserVo) session.getAttribute("authUser"));
-		BoardVo boardVo = boardService.getBoard(no);
 
 		boardService.delete(no);
 

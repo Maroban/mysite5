@@ -39,18 +39,11 @@ public class BoardDao {
 		return sqlSession.selectOne("board.selectBoard", no);
 	}
 
-	/*** 게시판 리스트 ***/
-	public List<BoardVo> selectList() {
-		System.out.println("[사용 메소드: BoardDao.selectList()]");
-
-		return selectList("");
-	}
-
 	/*** 게시판 리스트(검색) ***/
 	public List<BoardVo> selectList(String keyword) {
 		System.out.println("[사용 메소드: BoardDao.selectList(Keyword)]");
 
-		Map<String, String> keywordMap = new HashMap<String, String>();
+		Map<String, Object> keywordMap = new HashMap<String, Object>();
 		keywordMap.put("keyword", keyword);
 
 		return sqlSession.selectList("board.selectList", keywordMap);
