@@ -55,20 +55,34 @@ public class BoardController {
 
 	/*** 게시글 작성 폼 ***/
 	@RequestMapping(value = "/writeForm", method = { RequestMethod.GET, RequestMethod.POST })
-	public String writeForm() {
+	public String writeForm(HttpSession session) {
 		System.out.println("[현재 위치: BoardController.writeForm]");
 
-		return "board/writeForm";
+		UserVo authUser = ((UserVo) session.getAttribute("authUser"));
+
+		if (authUser != null) {
+			return "board/writeForm";
+		} else {
+			return "redirect:/user/loginForm";
+		}
+
 	}
 
 	/*** 게시글 작성 ***/
 	@RequestMapping(value = "/write", method = { RequestMethod.GET, RequestMethod.POST })
-	public String write(@ModelAttribute BoardVo boardVo) {
+	public String write(@ModelAttribute BoardVo boardVo, HttpSession session) {
 		System.out.println("[현재 위치: BoardController.write]");
 
-		boardService.write(boardVo);
+		UserVo authUser = ((UserVo) session.getAttribute("authUser"));
 
-		return "redirect:/board/list";
+		if (authUser != null) {
+			boardService.write(boardVo);
+
+			return "redirect:/board/list";
+		} else {
+			return "redirect:/user/loginForm";
+		}
+
 	}
 
 	/*** 게시글 수정 폼 ***/
