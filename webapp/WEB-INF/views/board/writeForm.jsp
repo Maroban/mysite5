@@ -55,7 +55,7 @@
 
               <a id="btn_cancel" href="${pageContext.request.contextPath}/board/list">취소</a>
               <button id="btn_add" type="submit">등록</button>
-              <input type="text" name="user_no" value="${authUser.no}">
+              <input type="hidden" name="user_no" value="${authUser.no}">
 
             </form>
             <!-- //form -->
