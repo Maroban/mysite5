@@ -66,22 +66,22 @@
 		    ) bu
    	]]>
 		<choose>
-			<when test="#{keyword} == '검색어 없음'">
-				<![CDATA[
-					ORDER BY
-			   			 rn DESC
-   				]]>
+			<when test="#{keyword} == null">
+			<![CDATA[
+				ORDER BY
+		   			 rn DESC
+			]]>
 			</when>
 
 			<otherwise>
-				<![CDATA[
-					WHERE
-					    ( bu.name
-					      || bu.title
-					      || bu.content ) LIKE '%' || #{keyword} || '%'
-					ORDER BY
-					    rn DESC
-					]]>
+			<![CDATA[
+				WHERE
+				    ( bu.name
+				      || bu.title
+				      || bu.content ) LIKE '%' || #{keyword,jdbcType=VARCHAR} || '%'
+				ORDER BY
+				    rn DESC
+			]]>
 			</otherwise>
 		</choose>
 	</select>
