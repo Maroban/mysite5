@@ -99,7 +99,7 @@ public class BoardController {
 
 	/*** 게시글 삭제 ***/
 	@RequestMapping(value = "/board/delete/{no}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String delete(@PathVariable("no") int no, HttpSession session) {
+	public String delete(@PathVariable("no") int no) {
 
 		boardService.delete(no);
 
