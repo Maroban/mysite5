@@ -11,43 +11,54 @@ import com.javaex.vo.GuestbookVo;
 @Repository
 public class GuestbookDao {
 
-	// 필드
-	@Autowired
-	private SqlSession sqlSession;
+  // 필드
+  @Autowired
+  private SqlSession sqlSession;
 
-	/**** 리스트 출력 ****/
-	public List<GuestbookVo> getGuestbookList() {
+  /**** 리스트 출력 ****/
+  public List<GuestbookVo> getGuestbookList() {
 
-		List<GuestbookVo> gList = sqlSession.selectList("guestbook.getList");
+    List<GuestbookVo> gList = sqlSession.selectList("guestbook.getList");
 
-		return gList;
-	}
+    return gList;
+  }
 
-	/**** 방명록 등록 ****/
-	public void insert(GuestbookVo guestbookVo) {
+  /**** 방명록 등록 ****/
+  public void insert(GuestbookVo guestbookVo) {
 
-		sqlSession.insert("guestbook.insert", guestbookVo);
+    sqlSession.insert("guestbook.insert", guestbookVo);
 
-		System.out.println("[" + guestbookVo.getName() + "님이 등록되었습니다.]");
+    System.out.println("[" + guestbookVo.getName() + "님이 등록되었습니다.]");
 
-	}
+  }
 
-	/**** 방명록 삭제 ****/
-	public int delete(GuestbookVo guestbookVo) {
+  /**** 방명록 삭제 ****/
+  public int delete(GuestbookVo guestbookVo) {
 
-		int count = -1;
+    int count = -1;
 
-		count = sqlSession.delete("guestbook.delete", guestbookVo);
+    count = sqlSession.delete("guestbook.delete", guestbookVo);
 
-		if (count == 1) {
-			System.out.println("[" + guestbookVo.getNo() + "번 글이 삭제되었습니다.]");
+    if (count == 1) {
+      System.out.println("[" + guestbookVo.getNo() + "번 글이 삭제되었습니다.]");
 
-		} else if (count == 0) {
-			System.out.println("비밀번호가 틀렸습니다.");
-		}
+    } else if (count == 0) {
+      System.out.println("비밀번호가 틀렸습니다.");
+    }
 
-		return count;
+    return count;
+  }
 
-	}
+  /**** 방명록 저장(ajax) ****/
+  public void insertKey(GuestbookVo guestbookVo) {
+
+    sqlSession.insert("guestbook.insertKey", guestbookVo);
+  }
+
+  /**** 리스트 가져오기(ajax) ****/
+  public GuestbookVo selectGuestbook(int no) {
+
+    return sqlSession.selectOne("guestbook.selectGuestbook", no);
+  }
 
 }
