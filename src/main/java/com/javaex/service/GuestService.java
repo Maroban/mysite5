@@ -26,12 +26,14 @@ public class GuestService {
   }
 
   /**** 방명록 삭제 ****/
-  public void delete(GuestbookVo guestbookVo) {
+  public int delete(GuestbookVo guestbookVo) {
 
-    guestbookDao.delete(guestbookVo);
+    int count = guestbookDao.delete(guestbookVo);
+
+    return count;
   }
 
-  /**** 방명록 저장 & 리스트 가져오기 ****/
+  /**** ajax 방명록 저장 & 리스트 가져오기 ****/
   public GuestbookVo insertKey(GuestbookVo guestbookVo) {
 
     // 방명록 저장

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.javaex.service.GuestService;
 import com.javaex.vo.GuestbookVo;
 
+@RequestMapping(value = "/api/guestbook/")
 @Controller
 public class ApiGuestbookController {
 
@@ -27,7 +28,7 @@ public class ApiGuestbookController {
 
   /*** ajax 리스트 가져오기 ***/
   @ResponseBody // 자바 객체를 HTTP 응답 본문의 객체로 변환하여 클라이언트로 전송시키는 역할
-  @RequestMapping(value = "/api/guestbook/list", method = {RequestMethod.GET, RequestMethod.POST})
+  @RequestMapping(value = "list", method = {RequestMethod.GET, RequestMethod.POST})
   public List<GuestbookVo> list() {
     System.out.println("[현재 위치: ApiGuestController.List]");
 
@@ -38,11 +39,22 @@ public class ApiGuestbookController {
 
   /*** ajax 방명록 write ***/
   @ResponseBody
-  @RequestMapping(value = "/api/guestbook/write", method = {RequestMethod.GET, RequestMethod.POST})
+  @RequestMapping(value = "write", method = {RequestMethod.GET, RequestMethod.POST})
   public GuestbookVo write(@ModelAttribute GuestbookVo guestbookVo) {
     System.out.println("[현재 위치: ApiGuestController.write]");
 
     return guestService.insertKey(guestbookVo);
+  }
+
+  /*** ajax 방명록 삭제 ***/
+  @ResponseBody
+  @RequestMapping(value = "remove", method = {RequestMethod.GET, RequestMethod.POST})
+  public int remove(@ModelAttribute GuestbookVo guestbookVo) {
+    System.out.println("[현재 위치: ApiGuestController.remove]");
+
+    int count = guestService.delete(guestbookVo);
+
+    return count;
   }
 
 
