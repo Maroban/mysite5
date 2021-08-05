@@ -59,7 +59,7 @@
                 <!-- 이미지반복영역 -->
                 <li id="t-${galleryList.no}">
                   <div class="view">
-                    <img class="imgItem" data-authno="${authUser.no}" data-no="${galleryList.no}" id="imgItem" src="${pageContext.request.contextPath}/upload/${galleryList.saveName}">
+                    <img class="imgItem" data-no="${galleryList.no}" id="imgItem" src="${pageContext.request.contextPath}/upload/${galleryList.saveName}">
                     <div class="imgWriter">
                       작성자: <strong>${galleryList.name}</strong>
                     </div>
@@ -216,54 +216,60 @@
 	});
 
 	// 사진을 클릭했을 때
-	$("#viewArea").on("click", "#imgItem", function() {
+	$("#viewArea").on(
+			"click",
+			"#imgItem",
+			function() {
 
-		$("#viewModal").modal();
+				$("#viewModal").modal();
 
-		$("#viewModelImg").attr({
-			src : $(this).attr("src")
-		});
+				$("#viewModelImg").attr({
+					src : $(this).attr("src")
+				});
 
-		$("#galleryNo").val($(this).data("no"));
+				$("#galleryNo").val($(this).data("no"));
 
-		$.ajax({
-			// 컨트롤러에서 대기중인 URL 주소이다.
-			url : "${pageContext.request.contextPath}/api/gallery/src",
+				$.ajax({
+					// 컨트롤러에서 대기중인 URL 주소이다.
+					url : "${pageContext.request.contextPath}/api/gallery/src",
 
-			// HTTP method type(GET, POST) 형식이다.
-			type : "get",
+					// HTTP method type(GET, POST) 형식이다.
+					type : "get",
 
-			// Json 형태의 데이터로 보낸다.
-			contentType : "application/json",
+					// Json 형태의 데이터로 보낸다.
+					contentType : "application/json",
 
-			// Json 형식의 데이터를 받는다.
-			dataType : "json",
+					// Json 형식의 데이터를 받는다.
+					dataType : "json",
 
-			data : {
-				no : $(this).data("no")
-			},
+					data : {
+						no : $(this).data("no")
+					},
 
-			// 성공일 경우 success로 들어오며, 'result'는 응답받은 데이터이다.
-			success : function(galleryVo) {
-				/*성공시 처리해야될 코드 작성*/
-				var userNo = galleryVo[Object.keys(galleryVo)[1]];
-				var authuserNo = $("#authUser_no").val();
+					// 성공일 경우 success로 들어오며, 'result'는 응답받은 데이터이다.
+					success : function(galleryVo) {
+						/*성공시 처리해야될 코드 작성*/
+						$("#viewModelContent").html(
+								galleryVo[Object.keys(galleryVo)[2]]);
 
-				if (authuserNo == userNo) {
-					$("#btnDel").show();
-				} else {
-					$("#btnDel").hide();
-				}
+						var userNo = galleryVo[Object.keys(galleryVo)[1]];
+						var authuserNo = $("#authUser_no").val();
 
-			},
+						if (authuserNo == userNo) {
+							$("#btnDel").show();
+						} else {
+							$("#btnDel").hide();
+						}
 
-			// 실패할경우 error로 들어온다.
-			error : function(XHR, status, error) {
-				console.error(status + " : " + error);
-			}
-		});
+					},
 
-	});
+					// 실패할경우 error로 들어온다.
+					error : function(XHR, status, error) {
+						console.error(status + " : " + error);
+					}
+				});
+
+			});
 </script>
 
 
