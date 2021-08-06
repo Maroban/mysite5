@@ -216,10 +216,7 @@
 	});
 
 	// 사진을 클릭했을 때
-	$("#viewArea").on(
-			"click",
-			"#imgItem",
-			function() {
+	$("#viewArea").on("click", "#imgItem", function() {
 
 				$("#viewModal").modal();
 
