@@ -101,10 +101,10 @@
                 </c:if>
 
               </ul>
-
-
-              <div class="clear"></div>
             </div>
+
+            <div class="clear"></div>
+
             <c:if test="${authUser.no != null}">
               <a id="btn_write" href="${pageContext.request.contextPath}/board/writeForm">글쓰기</a>
             </c:if>
